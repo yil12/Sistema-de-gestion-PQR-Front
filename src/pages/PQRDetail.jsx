@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+
+import {
+    getSeguimientos,
+} from "../services/seguimientoService";
+
 import { getPQRById } from "../services/pqrService";
 import Badge from "../components/common/Badge";
 import Button from "../components/common/Button";
@@ -11,6 +16,7 @@ const PQRDetail = () => {
     const [pqr, setPqr] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [seguimientos, setSeguimientos] = useState([]);
 
     useEffect(() => {
         const loadPQR = async () => {
@@ -19,8 +25,10 @@ const PQRDetail = () => {
                 setError("");
 
                 const data = await getPQRById(id);
+                const historial = await getSeguimientos(id);
 
                 setPqr(data);
+                setSeguimientos(historial);
             } catch (err) {
                 console.error(err);
 
@@ -177,6 +185,45 @@ const PQRDetail = () => {
                         : "Sin asignar"}
                 </p>
             </div>
+            <div>
+    <h3>Historial de seguimiento</h3>
+
+    {!seguimientos.length ? (
+        <p>
+            No hay seguimientos registrados.
+        </p>
+    ) : (
+        <div>
+            {seguimientos.map((seguimiento) => (
+                <article key={seguimiento.id}>
+                    <p>
+                        <strong>
+                            {seguimiento.tipo_accion}
+                        </strong>
+                    </p>
+
+                    <p>
+                        {seguimiento.descripcion}
+                    </p>
+
+                    <p>
+                        Fecha:{" "}
+                        {formatDate(
+                            seguimiento.fecha_registro
+                        )}
+                    </p>
+
+                    <p>
+                        Agente:{" "}
+                        {seguimiento.agente_id
+                            ? seguimiento.agente_id
+                            : "Sistema"}
+                    </p>
+                </article>
+            ))}
+        </div>
+    )}
+</div>
         </section>
     );
 };

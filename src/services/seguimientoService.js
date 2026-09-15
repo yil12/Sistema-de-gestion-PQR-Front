@@ -14,5 +14,5 @@ export const createSeguimiento = async (id, seguimientoData) => {
 export const getSeguimientos = async (id) => {
     const response = await api.get(`/api/pqr/${id}/seguimiento`);
 
-    return response.data;
+    return response.data.data;
 };
