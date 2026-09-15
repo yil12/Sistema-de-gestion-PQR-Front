@@ -1,0 +1,6 @@
+services:
+  frontend:
+    build: .
+    container_name: pqr_frontend
+    ports:
+      - "5173:80"
