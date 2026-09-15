@@ -5,9 +5,10 @@ import {
     getSeguimientos,
 } from "../services/seguimientoService";
 
-import { getPQRById } from "../services/pqrService";
+import { getPQRById, updatePQRStatus, } from "../services/pqrService";
 import Badge from "../components/common/Badge";
 import Button from "../components/common/Button";
+import Select from "../components/common/Select";
 
 const PQRDetail = () => {
     const { id } = useParams();
@@ -17,6 +18,8 @@ const PQRDetail = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [seguimientos, setSeguimientos] = useState([]);
+    const [nuevoEstado, setNuevoEstado] = useState("");
+    const [actualizandoEstado, setActualizandoEstado] = useState(false);
 
     useEffect(() => {
         const loadPQR = async () => {
@@ -44,6 +47,34 @@ const PQRDetail = () => {
 
         loadPQR();
     }, [id]);
+
+    const handleUpdateStatus = async () => {
+        if (!nuevoEstado || nuevoEstado === pqr.estado) {
+            return;
+        }
+
+        try {
+            setActualizandoEstado(true);
+
+            const response = await updatePQRStatus(pqr.id, nuevoEstado);
+
+            console.log("Respuesta actualización:", response);
+
+            setPqr(response);
+            setNuevoEstado("");
+
+            const historial = await getSeguimientos(pqr.id);
+            setSeguimientos(historial);
+        } catch(error) {
+            const mensaje =
+                error.response?.data?.mensaje ||
+                "No fue posible actualizar el estado.";
+
+            alert(mensaje);
+        } finally {
+            setActualizandoEstado(false);
+        }
+    };
 
     const formatDate = (date) => {
         if (!date) {
@@ -161,6 +192,31 @@ const PQRDetail = () => {
                     />
                 </p>
 
+                <Select
+                    label="Cambiar estado"
+                    name="nuevoEstado"
+                    value={nuevoEstado}
+                    onChange={(e) => setNuevoEstado(e.target.value)}
+                    options={[
+                        { value: "recibida", label: "Recibida" },
+                        { value: "en_gestion", label: "En gestión" },
+                        { value: "resuelta", label: "Resuelta" },
+                        { value: "cerrada", label: "Cerrada" },
+                    ]}
+                />
+
+                <Button
+                    type="button"
+                    onClick={handleUpdateStatus}
+                    disabled={
+                        actualizandoEstado ||
+                        !nuevoEstado ||
+                        nuevoEstado === pqr.estado
+                    }
+                >
+                    {actualizandoEstado ? "Actualizando..." : "Actualizar estado"}
+                </Button>
+
                 <p>
                     <strong>Prioridad:</strong>{" "}
                     <Badge
@@ -186,44 +242,44 @@ const PQRDetail = () => {
                 </p>
             </div>
             <div>
-    <h3>Historial de seguimiento</h3>
+                <h3>Historial de seguimiento</h3>
 
-    {!seguimientos.length ? (
-        <p>
-            No hay seguimientos registrados.
-        </p>
-    ) : (
-        <div>
-            {seguimientos.map((seguimiento) => (
-                <article key={seguimiento.id}>
+                {!seguimientos.length ? (
                     <p>
-                        <strong>
-                            {seguimiento.tipo_accion}
-                        </strong>
+                        No hay seguimientos registrados.
                     </p>
+                ) : (
+                    <div>
+                        {seguimientos.map((seguimiento) => (
+                            <article key={seguimiento.id}>
+                                <p>
+                                    <strong>
+                                        {seguimiento.tipo_accion}
+                                    </strong>
+                                </p>
 
-                    <p>
-                        {seguimiento.descripcion}
-                    </p>
+                                <p>
+                                    {seguimiento.descripcion}
+                                </p>
 
-                    <p>
-                        Fecha:{" "}
-                        {formatDate(
-                            seguimiento.fecha_registro
-                        )}
-                    </p>
+                                <p>
+                                    Fecha:{" "}
+                                    {formatDate(
+                                        seguimiento.fecha_registro
+                                    )}
+                                </p>
 
-                    <p>
-                        Agente:{" "}
-                        {seguimiento.agente_id
-                            ? seguimiento.agente_id
-                            : "Sistema"}
-                    </p>
-                </article>
-            ))}
-        </div>
-    )}
-</div>
+                                <p>
+                                    Agente:{" "}
+                                    {seguimiento.agente_id
+                                        ? seguimiento.agente_id
+                                        : "Sistema"}
+                                </p>
+                            </article>
+                        ))}
+                    </div>
+                )}
+            </div>
         </section>
     );
 };

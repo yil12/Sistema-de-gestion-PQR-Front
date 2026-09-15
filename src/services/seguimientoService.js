@@ -7,7 +7,7 @@ export const createSeguimiento = async (id, seguimientoData) => {
         seguimientoData
     );
 
-    return response.data;
+    return response.data.data;
 };
 
 // Obtener seguimientos de una PQR
