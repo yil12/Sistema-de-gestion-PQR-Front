@@ -4,6 +4,8 @@ import {
     Route,
     Navigate,
 } from "react-router-dom";
+
+import Login from "../pages/Login";
 import PQRList from "../pages/PQRList";
 
 import MainLayout from "../layouts/MainLayout";
@@ -12,6 +14,10 @@ const AppRouter = () => {
     return (
         <BrowserRouter>
             <Routes>
+                <Route
+                    path="/login"
+                    element={<Login />}
+                />
                 <Route element={<MainLayout />}>
                     <Route
                         path="/"

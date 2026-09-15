@@ -13,7 +13,7 @@ export const getPQR = async (params = {}) => {
         params,
     });
 
-    return response.data;
+    return response.data.data;
 };
 
 // Buscar una PQR por número de radicado
@@ -24,7 +24,7 @@ export const searchPQRByRadicado = async (radicado) => {
         },
     });
 
-    return response.data;
+    return response.data.data;
 };
 
 
@@ -32,7 +32,7 @@ export const searchPQRByRadicado = async (radicado) => {
 export const getPQRById = async (id) => {
     const response = await api.get(`/api/pqr/${id}`);
 
-    return response.data;
+    return response.data.data;
 };
 
 
@@ -42,5 +42,5 @@ export const updatePQRStatus = async (id, estado) => {
         estado,
     });
 
-    return response.data;
+    return response.data.data;
 };
