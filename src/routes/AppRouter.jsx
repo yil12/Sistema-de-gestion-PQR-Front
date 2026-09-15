@@ -8,6 +8,7 @@ import {
 import Login from "../pages/Login";
 import PQRList from "../pages/PQRList";
 import PQRCreate from "../pages/PQRCreate";
+import PQRDetail from "../pages/PQRDetail";
 
 import MainLayout from "../layouts/MainLayout";
 
@@ -37,7 +38,7 @@ const AppRouter = () => {
 
                     <Route
                         path="/pqr/:id"
-                        element={<div>Detalle de PQR</div>}
+                        element={<PQRDetail />}
                     />
 
                     <Route

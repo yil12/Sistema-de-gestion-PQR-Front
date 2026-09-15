@@ -3,12 +3,15 @@ import {
     getPQR,
     searchPQRByRadicado,
 } from "../services/pqrService";
+
+import { useNavigate } from "react-router-dom";
 import DataTable from "../components/common/DataTable";
 import Badge from "../components/common/Badge";
 import Button from "../components/common/Button";
 import Input from "../components/common/Input";
 
 const PQRList = () => {
+     const navigate = useNavigate();
     const [pqr, setPqr] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -195,6 +198,19 @@ const PQRList = () => {
             key: "categoria",
             label: "Categoría",
             render: (row) => row.categoria || "Sin categoría",
+        },
+        {
+            key: "acciones",
+            label: "Acciones",
+            render: (row) => (
+                <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => navigate(`/pqr/${row.id}`)}
+                >
+                    Ver detalle
+                </Button>
+            ),
         },
     ];
 
