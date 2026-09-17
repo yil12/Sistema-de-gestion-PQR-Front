@@ -44,3 +44,23 @@ export const updatePQRStatus = async (id, estado) => {
 
     return response.data.data;
 };
+
+export const getPQRStatistics = async () => {
+    const response = await api.get("/api/pqr/estadisticas");
+    return response.data.data;
+};
+
+// Buscar por radicado PQR 
+export const searchPublicPQRByRadicado = async (radicado) => {
+    const response = await api.get("/api/pqr/buscar-publica", {
+        params: { radicado },
+    });
+
+    return response.data.data;
+};
+
+// asignar agente a PQR
+export const assignAgent = async (pqrId, agenteId) => {
+    const response = await api.patch(`/api/pqr/${pqrId}/asignar`, { agente_id: agenteId });
+    return response.data;
+};

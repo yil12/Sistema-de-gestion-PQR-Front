@@ -1,3 +1,5 @@
+import "../../styles/css/Select.css"
+
 const Select = ({
     label,
     name,
@@ -10,7 +12,7 @@ const Select = ({
     onChange,
 }) => {
     return (
-        <div>
+        <div className="form-field"> 
             {label && (
                 <label htmlFor={name}>
                     {label}
@@ -25,6 +27,7 @@ const Select = ({
                 onChange={onChange}
                 required={required}
                 disabled={disabled}
+                className={error ? "input-error" : ""} 
             >
                 <option value="">{placeholder}</option>
 
@@ -34,8 +37,7 @@ const Select = ({
                     </option>
                 ))}
             </select>
-
-            {error && <p>{error}</p>}
+            {error && <span className="form-error">{error}</span>}
         </div>
     );
 };

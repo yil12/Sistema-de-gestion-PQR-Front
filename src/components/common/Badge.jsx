@@ -1,3 +1,5 @@
+import "../../styles/css/Badge.css";
+
 const Badge = ({ value, type = "default" }) => {
     const normalizedValue = String(value ?? "").toLowerCase();
 
@@ -11,6 +13,10 @@ const Badge = ({ value, type = "default" }) => {
         media: "Media",
         alta: "Alta",
         urgente: "Urgente",
+
+        agente: "Agente",
+        supervisor: "Supervisor",
+        administrador: "Administrador",
     };
 
     const label = labels[normalizedValue] ?? value;

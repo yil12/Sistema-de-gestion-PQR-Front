@@ -1,3 +1,5 @@
+import "../../styles/css/Input.css";
+
 const Input = ({
     label,
     name,
@@ -8,9 +10,10 @@ const Input = ({
     disabled = false,
     error = "",
     onChange,
+    className = "",
 }) => {
     return (
-        <div className="form-field">
+        <div className={`form-field ${className}`}> {}
             {label && (
                 <label htmlFor={name}>
                     {label}

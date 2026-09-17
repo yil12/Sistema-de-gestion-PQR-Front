@@ -1,0 +1,258 @@
+/* ====== CONTENEDOR PRINCIPAL ====== */
+.pqr-create-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.pqr-create-container > h2 {
+    margin: 0 0 20px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+/* ====== INDICADOR DE PASOS ====== */
+.pqr-stepper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.pqr-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: none;
+    border: none;
+    padding: 8px 4px;
+    cursor: pointer;
+}
+
+.pqr-step:disabled {
+    cursor: not-allowed;
+}
+
+.pqr-step-index {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 2px solid #d1d5db;
+    color: #9ca3af;
+    font-size: 13px;
+    font-weight: 600;
+    flex-shrink: 0;
+    transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.pqr-step-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #9ca3af;
+    white-space: nowrap;
+    transition: color 0.2s ease;
+}
+
+.pqr-step.is-active .pqr-step-index {
+    border-color: #667eea;
+    color: #667eea;
+}
+
+.pqr-step.is-active .pqr-step-label {
+    color: #1f2937;
+}
+
+.pqr-step.is-done .pqr-step-index {
+    border-color: #667eea;
+    background: #667eea;
+    color: #ffffff;
+}
+
+.pqr-step.is-done .pqr-step-label {
+    color: #4b5563;
+}
+
+.pqr-step-divider {
+    flex: 1;
+    height: 2px;
+    background: #e5e7eb;
+    margin: 0 4px;
+    transition: background 0.2s ease;
+}
+
+.pqr-step-divider.is-done {
+    background: #667eea;
+}
+
+/* ====== FORMULARIO ====== */
+.pqr-form {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* ====== SECCIONES DEL FORMULARIO ====== */
+.form-section h3 {
+    margin: 0 0 20px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+/* ====== GRID DE CAMPOS (2 COLUMNAS) ====== */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+/* Campo que ocupa todo el ancho (para descripción, etc.) */
+.form-grid .full-width {
+    grid-column: 1 / -1;
+}
+
+/* ====== MENSAJE DE ERROR GENERAL ====== */
+.pqr-error-message {
+    padding: 16px;
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    border-left: 4px solid #ef4444;
+    color: #b91c1c;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* ====== TEXTAREA ====== */
+.form-field textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 15px;
+    color: #1f2937;
+    background-color: #ffffff;
+    outline: none;
+    box-sizing: border-box;
+    resize: vertical;
+    font-family: inherit;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    min-height: 110px;
+}
+
+.form-field textarea:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+}
+
+/* ====== BOTONES DE ACCIÓN ====== */
+.pqr-form-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.pqr-form-actions button {
+    flex: 1;
+    max-width: 200px;
+}
+
+/* ====== VISTA DE ÉXITO ====== */
+.pqr-success-container {
+    text-align: center;
+    padding: 48px 32px;
+    max-width: 600px;
+    margin: 64px auto;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e5e7eb;
+}
+
+.pqr-success-container h2 {
+    color: #065f46;
+    margin: 0 0 16px;
+    font-size: 24px;
+}
+
+.pqr-success-container p {
+    color: #374151;
+    font-size: 16px;
+    margin-bottom: 24px;
+}
+
+.pqr-radicado-box {
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+    border-radius: 10px;
+    padding: 24px;
+    margin: 24px auto;
+    max-width: 400px;
+}
+
+.pqr-radicado-box strong {
+    display: block;
+    color: #166534;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.pqr-radicado-box p {
+    font-size: 28px;
+    font-weight: 700;
+    color: #15803d;
+    margin: 0;
+    letter-spacing: 0.5px;
+    font-variant-numeric: tabular-nums;
+}
+
+.pqr-success-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 32px;
+}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 768px) {
+    .pqr-create-container > h2 {
+        font-size: 24px;
+    }
+
+    .pqr-form {
+        padding: 24px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr; /* Una sola columna en móviles */
+    }
+
+    .pqr-form-actions,
+    .pqr-success-actions {
+        flex-direction: column;
+    }
+
+    .pqr-form-actions button,
+    .pqr-success-actions button {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .pqr-radicado-box p {
+        font-size: 22px;
+    }
+
+    .pqr-step-label {
+        display: none; /* En móvil solo se ven los círculos numerados */
+    }
+}

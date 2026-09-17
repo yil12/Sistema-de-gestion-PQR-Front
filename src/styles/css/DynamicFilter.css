@@ -1,0 +1,268 @@
+.dynamic-filter {
+    position: relative;
+    display: inline-block;
+}
+
+/* ====== BOTÓN "FILTRO" ====== */
+.filter-trigger-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 36px;
+    padding: 0 14px;
+    background: var(--brand-paper);
+    border: 1px solid var(--brand-border);
+    border-radius: var(--brand-radius-sm);
+    font-family: var(--brand-sans);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--brand-text);
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+}
+
+.filter-trigger-btn:hover {
+    border-color: var(--brand-ink);
+}
+
+.filter-trigger-btn:focus-visible {
+    outline: 2px solid var(--brand-ink);
+    outline-offset: 2px;
+}
+
+.filter-trigger-btn.has-active,
+.filter-trigger-btn.is-open {
+    border-color: var(--brand-ink);
+    color: var(--brand-ink);
+    background: var(--brand-ink-soft);
+}
+
+.filter-count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: var(--brand-ink);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* ====== POPOVER ====== */
+.filter-popover {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: 480px;
+    max-width: 90vw;
+    background: var(--brand-paper);
+    border: 1px solid var(--brand-border);
+    border-radius: var(--brand-radius-md);
+    box-shadow: 0 12px 32px rgba(20, 49, 79, 0.14);
+    z-index: 50;
+    overflow: hidden;
+    animation: filter-popover-in 0.12s ease-out;
+}
+
+@keyframes filter-popover-in {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.filter-popover-body {
+    display: flex;
+    min-height: 260px;
+    max-height: 360px;
+}
+
+/* ====== COLUMNA IZQUIERDA (lista de campos) ====== */
+.filter-popover-left {
+    flex: 0 0 180px;
+    border-right: 1px solid var(--brand-border);
+    padding: 12px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow-y: auto;
+}
+
+.filter-field-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    text-align: left;
+    padding: 8px 10px;
+    border: none;
+    background: transparent;
+    border-radius: var(--brand-radius-sm);
+    font-family: var(--brand-sans);
+    font-size: 14px;
+    color: var(--brand-text);
+    cursor: pointer;
+}
+
+.filter-field-item:hover {
+    background: var(--brand-surface-muted);
+}
+
+.filter-field-item:focus-visible {
+    outline: 2px solid var(--brand-ink);
+    outline-offset: -2px;
+}
+
+.filter-field-item.is-active {
+    background: var(--brand-ink-soft);
+    color: var(--brand-ink);
+    font-weight: 600;
+}
+
+.filter-field-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--brand-ink);
+    flex-shrink: 0;
+}
+
+/* ====== COLUMNA DERECHA (opciones) ====== */
+.filter-popover-right {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+}
+
+.filter-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--brand-border);
+    border-radius: var(--brand-radius-sm);
+    padding: 8px 12px;
+    margin-bottom: 14px;
+    color: var(--brand-text-faint);
+}
+
+.filter-search:focus-within {
+    border-color: var(--brand-ink);
+}
+
+.filter-search input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-family: var(--brand-sans);
+    font-size: 14px;
+    color: var(--brand-text);
+    background: transparent;
+}
+
+.filter-search-standalone {
+    margin-bottom: 0;
+}
+
+.filter-options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.filter-option-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--brand-sans);
+    font-size: 14px;
+    color: var(--brand-text);
+    cursor: pointer;
+}
+
+.filter-option-row input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--brand-ink);
+    cursor: pointer;
+}
+
+.filter-no-results {
+    font-size: 13px;
+    color: var(--brand-text-faint);
+    margin: 0;
+}
+
+/* ====== FOOTER ====== */
+.filter-popover-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-top: 1px solid var(--brand-border);
+}
+
+.filter-clear-all,
+.filter-clear-field {
+    background: none;
+    border: none;
+    font-family: var(--brand-sans);
+    font-size: 14px;
+    color: var(--brand-text-muted);
+    cursor: pointer;
+    padding: 6px 4px;
+}
+
+.filter-clear-all:hover,
+.filter-clear-field:hover {
+    color: var(--brand-text);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.filter-clear-all:focus-visible,
+.filter-clear-field:focus-visible {
+    outline: 2px solid var(--brand-ink);
+    outline-offset: 2px;
+}
+
+.filter-footer-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 560px) {
+    .filter-popover {
+        width: 92vw;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .filter-popover-body {
+        flex-direction: column;
+        max-height: 70vh;
+    }
+
+    .filter-popover-left {
+        flex: 0 0 auto;
+        flex-direction: row;
+        flex-wrap: wrap;
+        border-right: none;
+        border-bottom: 1px solid var(--brand-border);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .filter-popover {
+        animation: none;
+    }
+}

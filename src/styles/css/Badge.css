@@ -1,0 +1,96 @@
+/* ====== BASE DEL BADGE ====== */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-family: var(--brand-sans);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.5;
+    white-space: nowrap;
+    letter-spacing: 0.01em;
+}
+
+/* =========================================
+   ESTADOS DE LA PQR (badge-estado-*)
+   ========================================= */
+.badge-estado-recibida {
+    background-color: var(--brand-ink-soft);
+    color: var(--brand-ink);
+    border: 1px solid rgba(20, 49, 79, 0.16);
+}
+
+.badge-estado-en_gestion {
+    background-color: var(--brand-amber-soft);
+    color: var(--brand-amber-btn);
+    border: 1px solid rgba(184, 121, 30, 0.22);
+}
+
+.badge-estado-resuelta {
+    background-color: var(--brand-green-soft);
+    color: var(--brand-green);
+    border: 1px solid rgba(61, 107, 82, 0.2);
+}
+
+.badge-estado-cerrada {
+    background-color: var(--brand-surface-muted);
+    color: var(--brand-text-muted);
+    border: 1px solid var(--brand-border);
+}
+
+/* =========================================
+   PRIORIDADES (badge-prioridad-*)
+   ========================================= */
+.badge-prioridad-baja {
+    background-color: var(--brand-surface-muted);
+    color: var(--brand-text-muted);
+    border: 1px solid var(--brand-border);
+}
+
+.badge-prioridad-media {
+    background-color: var(--brand-ink-soft);
+    color: var(--brand-ink);
+    border: 1px solid rgba(20, 49, 79, 0.16);
+}
+
+.badge-prioridad-alta {
+    background-color: var(--brand-amber-soft);
+    color: var(--brand-amber-btn);
+    border: 1px solid rgba(184, 121, 30, 0.22);
+}
+
+.badge-prioridad-urgente {
+    background-color: var(--brand-danger-soft);
+    color: var(--brand-danger-dark);
+    border: 1px solid var(--brand-danger-border);
+}
+
+/* ====== DEFAULT ====== */
+.badge-default {
+    background-color: var(--brand-surface-muted);
+    color: var(--brand-text);
+    border: 1px solid var(--brand-border);
+}
+
+/* =========================================
+   ROLES (badge-rol-*)
+   ========================================= */
+.badge-rol-agente {
+    background-color: var(--brand-surface-muted);
+    color: var(--brand-text-muted);
+    border: 1px solid var(--brand-border);
+}
+
+.badge-rol-supervisor {
+    background-color: var(--brand-green-soft);
+    color: var(--brand-green);
+    border: 1px solid rgba(61, 107, 82, 0.2);
+}
+
+.badge-rol-administrador {
+    background-color: var(--brand-ink-soft);
+    color: var(--brand-ink);
+    border: 1px solid rgba(20, 49, 79, 0.16);
+}

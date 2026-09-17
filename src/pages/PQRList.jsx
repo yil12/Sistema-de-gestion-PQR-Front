@@ -1,56 +1,42 @@
 import { useEffect, useState } from "react";
-import {
-    getPQR,
-    searchPQRByRadicado,
-} from "../services/pqrService";
-
 import { useNavigate } from "react-router-dom";
+import { getPQR, searchPQRByRadicado } from "../services/pqrService";
 import DataTable from "../components/common/DataTable";
-import Badge from "../components/common/Badge";
+import PQRBoard from "../components/common/PQRBoard";
 import Button from "../components/common/Button";
-import Input from "../components/common/Input";
+import Badge from "../components/common/Badge";
+import DynamicFilter from "../components/common/DynamicFilter";
+import Toast from "../components/common/Toast";
+import "../styles/css/PQRList.css";
+
+const EMPTY_FILTERS = { tipo: "", estado: "", prioridad: "", categoria: "", radicado: "" };
 
 const PQRList = () => {
-     const navigate = useNavigate();
+    const navigate = useNavigate();
+
+    const [viewMode, setViewMode] = useState("board");
+
     const [pqr, setPqr] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
 
-    const [filters, setFilters] = useState({
-        tipo: "",
-        estado: "",
-        prioridad: "",
-        categoria: "",
-        radicado: "",
+    const [toast, setToast] = useState({
+        show: false,
+        mensaje: "",
+        tipo: "success",
     });
 
-    const [appliedFilters, setAppliedFilters] = useState({
-        tipo: "",
-        estado: "",
-        prioridad: "",
-        categoria: "",
-        radicado: "",
-    });
+    const [appliedFilters, setAppliedFilters] = useState(EMPTY_FILTERS);
 
     const [page, setPage] = useState(1);
     const [limit] = useState(10);
-
     const [total, setTotal] = useState(0);
 
     const loadPQR = async () => {
         try {
             setLoading(true);
-            setError("");
 
-            // Si existe búsqueda por radicado,
-            // utilizamos el endpoint específico.
-            if (appliedFilters.radicado.trim()) {
-                const data = await searchPQRByRadicado(
-                    appliedFilters.radicado.trim()
-                );
-
-                // El endpoint puede devolver una PQR individual
-                // o una estructura diferente.
+            if (appliedFilters.radicado?.trim()) {
+                const data = await searchPQRByRadicado(appliedFilters.radicado.trim());
                 if (Array.isArray(data)) {
                     setPqr(data);
                     setTotal(data.length);
@@ -61,153 +47,85 @@ const PQRList = () => {
                     setPqr([]);
                     setTotal(0);
                 }
-
                 return;
             }
 
+            const fetchLimit = viewMode === "board" ? 100 : limit;
+            const fetchPage = viewMode === "board" ? 1 : page;
+
             const params = {
-                page,
-                limit,
+                page: fetchPage,
+                limit: fetchLimit
             };
 
-            if (appliedFilters.tipo) {
-                params.tipo = appliedFilters.tipo;
-            }
-
-            if (appliedFilters.estado) {
-                params.estado = appliedFilters.estado;
-            }
-
-            if (appliedFilters.prioridad) {
-                params.prioridad = appliedFilters.prioridad;
-            }
-
-            if (appliedFilters.categoria.trim()) {
-                params.categoria = appliedFilters.categoria.trim();
-            }
+            if (appliedFilters.tipo) params.tipo = appliedFilters.tipo;
+            if (appliedFilters.estado) params.estado = appliedFilters.estado;
+            if (appliedFilters.prioridad) params.prioridad = appliedFilters.prioridad;
+            if (appliedFilters.categoria?.trim()) params.categoria = appliedFilters.categoria.trim();
 
             const response = await getPQR(params);
 
-            /*
-             * Actualmente getPQR() devuelve directamente
-             * response.data.data.
-             */
+            let dataArray = [];
+            let totalCount = 0;
+
             if (Array.isArray(response)) {
-                setPqr(response);
-                setTotal(response.length);
-            } else {
-                setPqr([]);
-                setTotal(0);
+                dataArray = response;
+                totalCount = response.length;
+            } else if (response && response.data && Array.isArray(response.data)) {
+                dataArray = response.data;
+                totalCount = response.total || response.data.length;
             }
+
+            setPqr(dataArray);
+            setTotal(totalCount);
+
         } catch (err) {
             console.error(err);
-
             setPqr([]);
             setTotal(0);
-
-            setError(
-                err.response?.data?.mensaje ||
-                err.response?.data?.detail ||
-                "No fue posible cargar las PQR."
-            );
+            
+            setToast({
+                show: true,
+                mensaje: err.response?.data?.mensaje || err.response?.data?.detail || "No fue posible cargar las PQR.",
+                tipo: "error",
+            });
         } finally {
             setLoading(false);
         }
     };
 
     useEffect(() => {
+        if (viewMode === "board") {
+            setPage(1);
+        }
         loadPQR();
-    }, [page, appliedFilters]);
-
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-
-        setFilters((current) => ({
-            ...current,
-            [name]: value,
-        }));
-    };
-
-    const handleApplyFilters = (event) => {
-        event.preventDefault();
-
-        setPage(1);
-        setAppliedFilters(filters);
-    };
-
-    const handleClearFilters = () => {
-        const emptyFilters = {
-            tipo: "",
-            estado: "",
-            prioridad: "",
-            categoria: "",
-            radicado: "",
-        };
-
-        setFilters(emptyFilters);
-        setAppliedFilters(emptyFilters);
-        setPage(1);
-    };
+    }, [page, appliedFilters, viewMode]);
 
     const handlePreviousPage = () => {
-        if (page > 1) {
-            setPage((current) => current - 1);
-        }
+        if (page > 1) setPage((current) => current - 1);
     };
 
     const handleNextPage = () => {
-        if (pqr.length === limit) {
-            setPage((current) => current + 1);
-        }
+        if (pqr.length === limit) setPage((current) => current + 1);
+    };
+
+    const handleApplyDynamicFilters = (dynamicFilters) => {
+        setPage(1);
+        setAppliedFilters({ ...EMPTY_FILTERS, ...dynamicFilters });
     };
 
     const columns = [
-        {
-            key: "radicado",
-            label: "Radicado",
-        },
-        {
-            key: "tipo",
-            label: "Tipo",
-        },
-        {
-            key: "titulo",
-            label: "Título",
-        },
-        {
-            key: "prioridad",
-            label: "Prioridad",
-            render: (row) => (
-                <Badge
-                    value={row.prioridad}
-                    type="prioridad"
-                />
-            ),
-        },
-        {
-            key: "estado",
-            label: "Estado",
-            render: (row) => (
-                <Badge
-                    value={row.estado}
-                    type="estado"
-                />
-            ),
-        },
-        {
-            key: "categoria",
-            label: "Categoría",
-            render: (row) => row.categoria || "Sin categoría",
-        },
+        { key: "radicado", label: "Radicado" },
+        { key: "tipo", label: "Tipo", render: (row) => row.tipo.charAt(0).toUpperCase() + row.tipo.slice(1) },
+        { key: "titulo", label: "Título" },
+        { key: "prioridad", label: "Prioridad", render: (row) => <Badge value={row.prioridad} type="prioridad" /> },
+        { key: "estado", label: "Estado", render: (row) => <Badge value={row.estado} type="estado" /> },
+        { key: "categoria", label: "Categoría", render: (row) => row.categoria || "Sin categoría" },
         {
             key: "acciones",
             label: "Acciones",
             render: (row) => (
-                <Button
-                    type="button"
-                    variant="secondary"
-                    onClick={() => navigate(`/pqr/${row.id}`)}
-                >
+                <Button type="button" variant="outline" size="sm" onClick={() => navigate(`/pqr/${row.id}`)}>
                     Ver detalle
                 </Button>
             ),
@@ -215,176 +133,100 @@ const PQRList = () => {
     ];
 
     return (
-        <section>
-            <h2>PQR</h2>
-
-            <form onSubmit={handleApplyFilters}>
-                <Input
-                    label="Radicado"
-                    name="radicado"
-                    value={filters.radicado}
-                    placeholder="Ej. PQR-2026-000007"
-                    onChange={handleChange}
+        <div className="pqr-list-container">
+            {toast.show && (
+                <Toast
+                    tipo={toast.tipo}
+                    mensaje={toast.mensaje}
+                    onClose={() => setToast((prev) => ({ ...prev, show: false }))}
+                    duracion={4000}
                 />
-
-                <div className="form-field">
-                    <label htmlFor="tipo">
-                        Tipo
-                    </label>
-
-                    <select
-                        id="tipo"
-                        name="tipo"
-                        value={filters.tipo}
-                        onChange={handleChange}
-                    >
-                        <option value="">
-                            Todos
-                        </option>
-
-                        <option value="peticion">
-                            Petición
-                        </option>
-
-                        <option value="queja">
-                            Queja
-                        </option>
-
-                        <option value="reclamo">
-                            Reclamo
-                        </option>
-                    </select>
-                </div>
-
-                <div className="form-field">
-                    <label htmlFor="estado">
-                        Estado
-                    </label>
-
-                    <select
-                        id="estado"
-                        name="estado"
-                        value={filters.estado}
-                        onChange={handleChange}
-                    >
-                        <option value="">
-                            Todos
-                        </option>
-
-                        <option value="recibida">
-                            Recibida
-                        </option>
-
-                        <option value="en_gestion">
-                            En gestión
-                        </option>
-
-                        <option value="resuelta">
-                            Resuelta
-                        </option>
-
-                        <option value="cerrada">
-                            Cerrada
-                        </option>
-                    </select>
-                </div>
-
-                <div className="form-field">
-                    <label htmlFor="prioridad">
-                        Prioridad
-                    </label>
-
-                    <select
-                        id="prioridad"
-                        name="prioridad"
-                        value={filters.prioridad}
-                        onChange={handleChange}
-                    >
-                        <option value="">
-                            Todas
-                        </option>
-
-                        <option value="baja">
-                            Baja
-                        </option>
-
-                        <option value="media">
-                            Media
-                        </option>
-
-                        <option value="alta">
-                            Alta
-                        </option>
-
-                        <option value="urgente">
-                            Urgente
-                        </option>
-                    </select>
-                </div>
-
-                <Input
-                    label="Categoría"
-                    name="categoria"
-                    value={filters.categoria}
-                    placeholder="Ej. Atención"
-                    onChange={handleChange}
-                />
-
-                <div>
-                    <Button type="submit">
-                        Aplicar filtros
-                    </Button>
-
-                    <Button
-                        type="button"
-                        variant="secondary"
-                        onClick={handleClearFilters}
-                    >
-                        Limpiar
-                    </Button>
-                </div>
-            </form>
-
-            {error && (
-                <p>
-                    {error}
-                </p>
             )}
 
-            <DataTable
-                columns={columns}
-                data={pqr}
-                loading={loading}
-                emptyMessage="No hay PQR que coincidan con los filtros."
-            />
-
-            {!loading && !appliedFilters.radicado && (
-                <div>
-                    <p>
-                        Página {page}
-                        {total > 0 && ` — ${total} registros`}
-                    </p>
+            {/* Barra de acciones superior */}
+            <div className="pqr-action-bar">
+                <div className="pqr-list-main-header">
+                    <h2>Gestión de PQR</h2>
+                </div>
+                <div className="pqr-list-actions">
+                    <DynamicFilter
+                        onApplyFilters={handleApplyDynamicFilters}
+                        initialFilters={appliedFilters}
+                    />
 
                     <Button
-                        type="button"
                         variant="secondary"
-                        disabled={page === 1}
-                        onClick={handlePreviousPage}
+                        size="sm"
+                        onClick={() => setViewMode(viewMode === "table" ? "board" : "table")}
                     >
-                        Anterior
+                        {viewMode === "table" ? (
+                            <>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" width="16" height="16" style={{ marginRight: "6px" }}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                                </svg>
+                                Vista Tablero
+                            </>
+                        ) : (
+                            <>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" width="16" height="16" style={{ marginRight: "6px" }}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                                </svg>
+                                Vista Tabla
+                            </>
+                        )}
                     </Button>
 
-                    <Button
-                        type="button"
-                        variant="secondary"
-                        disabled={pqr.length < limit}
-                        onClick={handleNextPage}
-                    >
-                        Siguiente
+                    <Button variant="primary" size="sm" onClick={() => navigate("/pqr/nueva")}>
+                        + Nueva PQR
                     </Button>
                 </div>
+            </div>
+
+
+            {/* Renderizado condicional de vistas */}
+            {viewMode === "table" ? (
+                <>
+                    <DataTable
+                        columns={columns}
+                        data={pqr}
+                        loading={loading}
+                        emptyMessage="No hay PQR que coincidan con los filtros."
+                    />
+
+                    {/* Paginación (solo tiene sentido en vista tabla) */}
+                    {!loading && !appliedFilters.radicado && total > 0 && (
+                        <div className="pqr-pagination">
+                            <span className="pqr-pagination-info">
+                                Página {page} — Mostrando {pqr.length} de {total} registros
+                            </span>
+                            <div className="pqr-pagination-actions">
+                                <Button
+                                    type="button"
+                                    variant="secondary"
+                                    size="sm"
+                                    disabled={page === 1}
+                                    onClick={handlePreviousPage}
+                                >
+                                    Anterior
+                                </Button>
+                                <Button
+                                    type="button"
+                                    variant="secondary"
+                                    size="sm"
+                                    disabled={pqr.length < limit}
+                                    onClick={handleNextPage}
+                                >
+                                    Siguiente
+                                </Button>
+                            </div>
+                        </div>
+                    )}
+                </>
+            ) : (
+                // Vista Tablero (Kanban)
+                <PQRBoard data={pqr} onEdit={(pqrItem) => navigate(`/pqr/${pqrItem.id}`)} />
             )}
-        </section>
+        </div>
     );
 };
 
