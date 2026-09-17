@@ -1,0 +1,41 @@
+.solicitantes-list-container {
+    max-width: 100%;
+    padding: 0 30px;
+}
+
+.solicitantes-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.solicitantes-list-header h2 {
+    margin: 0;
+    font-family: var(--brand-serif);
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--brand-text);
+}
+
+.solicitantes-list-error {
+    padding: 16px;
+    background-color: var(--brand-danger-soft);
+    border: 1px solid var(--brand-danger-border);
+    border-left: 3px solid var(--brand-danger);
+    color: var(--brand-danger-dark);
+    border-radius: var(--brand-radius-sm);
+    margin-bottom: 24px;
+    font-family: var(--brand-sans);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+@media (max-width: 640px) {
+    .solicitantes-list-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

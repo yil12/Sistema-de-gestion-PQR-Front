@@ -1,0 +1,363 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&family=Public+Sans:wght@400;500;600;700&display=swap');
+
+/* =========================================================
+   TOKENS
+========================================================= */
+
+.public-home-page {
+    --ph-ink: #14314f;
+    --ph-ink-dark: #0c2137;
+    --ph-paper: #fafaf8;
+    --ph-page-bg: #eeece5;
+    --ph-amber: #b8791e;
+    --ph-amber-soft: rgba(184, 121, 30, 0.12);
+    --ph-green: #3d6b52;
+    --ph-green-soft: rgba(61, 107, 82, 0.12);
+    --ph-text: #1b2530;
+    --ph-text-muted: #5b6472;
+    --ph-text-on-ink: #f2f0ea;
+    --ph-text-on-ink-muted: #a9b7c6;
+    --ph-border: #e2ded2;
+    --ph-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --ph-sans: "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    background: var(--ph-page-bg);
+    font-family: var(--ph-sans);
+    color: var(--ph-text);
+}
+
+/* =========================================================
+   SHELL (panel partido)
+========================================================= */
+
+.public-home-shell {
+    flex: 1;
+    display: grid;
+    grid-template-columns: minmax(300px, 38%) 1fr;
+
+    width: 100%;
+    max-width: 1080px;
+    margin: 0 auto;
+}
+
+/* ---------- Panel izquierdo: membrete ---------- */
+
+.public-home-panel {
+    position: relative;
+    overflow: hidden;
+
+    padding: 56px 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    background: linear-gradient(165deg, var(--ph-ink) 0%, var(--ph-ink-dark) 100%);
+    color: var(--ph-text-on-ink);
+}
+
+.public-home-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-bottom: 40px;
+}
+
+.public-home-mark svg {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    color: var(--ph-amber);
+}
+
+.public-home-mark span {
+    font-family: var(--ph-serif);
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.public-home-panel h1 {
+    margin: 0 0 16px;
+
+    font-family: var(--ph-serif);
+    font-size: 34px;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.public-home-panel p {
+    max-width: 34ch;
+    margin: 0;
+
+    color: var(--ph-text-on-ink-muted);
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+/* ---------- Ticket decorativo de radicado ---------- */
+
+.public-home-ticket {
+    margin-top: 44px;
+    padding: 16px 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    max-width: 300px;
+
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px dashed rgba(242, 240, 234, 0.3);
+    border-radius: 4px;
+}
+
+.public-home-ticket-label {
+    display: block;
+    margin-bottom: 3px;
+
+    color: var(--ph-text-on-ink-muted);
+    font-size: 11px;
+    letter-spacing: 0.3px;
+}
+
+.public-home-ticket-value {
+    font-family: var(--ph-serif);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ph-text-on-ink);
+}
+
+.public-home-ticket-dot {
+    width: 8px;
+    height: 8px;
+    flex-shrink: 0;
+
+    background: var(--ph-amber);
+    border-radius: 50%;
+}
+
+/* ---------- Panel derecho: contenido ---------- */
+
+.public-home-content {
+    padding: 56px 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    background: var(--ph-paper);
+}
+
+/* =========================================================
+   ACCIONES
+========================================================= */
+
+.public-home-actions {
+    display: flex;
+    flex-direction: column;
+}
+
+.public-home-action {
+    width: 100%;
+    padding: 26px 8px;
+
+    display: grid;
+    grid-template-columns: 40px 1fr 18px;
+    align-items: center;
+    gap: 18px;
+    text-align: left;
+
+    border: none;
+    border-top: 1px solid var(--ph-border);
+    background: transparent;
+
+    font-family: inherit;
+    color: var(--ph-text);
+    cursor: pointer;
+
+    transition: padding-left 0.18s ease;
+}
+
+.public-home-actions .public-home-action:last-of-type {
+    border-bottom: 1px solid var(--ph-border);
+}
+
+.public-home-action:hover,
+.public-home-action:focus-visible {
+    padding-left: 14px;
+}
+
+.public-home-action:focus-visible {
+    outline: 2px solid var(--ph-ink);
+    outline-offset: -2px;
+}
+
+.public-home-action-icon {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+}
+
+.public-home-action-icon svg {
+    width: 19px;
+    height: 19px;
+}
+
+.public-home-action-register .public-home-action-icon {
+    background: var(--ph-amber-soft);
+    color: var(--ph-amber);
+}
+
+.public-home-action-consult .public-home-action-icon {
+    background: var(--ph-green-soft);
+    color: var(--ph-green);
+}
+
+.public-home-action-title {
+    display: block;
+    margin-bottom: 4px;
+
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ph-text);
+}
+
+.public-home-action-description {
+    display: block;
+
+    color: var(--ph-text-muted);
+    font-size: 13.5px;
+    line-height: 1.55;
+}
+
+.public-home-action-arrow {
+    width: 18px;
+    height: 18px;
+
+    color: var(--ph-text-muted);
+    transition: transform 0.18s ease, color 0.18s ease;
+}
+
+.public-home-action:hover .public-home-action-arrow,
+.public-home-action:focus-visible .public-home-action-arrow {
+    transform: translateX(3px);
+    color: var(--ph-text);
+}
+
+/* =========================================================
+   ACCESO AGENTES
+========================================================= */
+
+.public-home-agent {
+    margin-top: 32px;
+
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+
+    color: var(--ph-text-muted);
+    font-size: 13.5px;
+}
+
+.public-home-agent button {
+    padding: 0;
+
+    border: none;
+    background: transparent;
+
+    color: var(--ph-ink);
+
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.public-home-agent button:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.public-home-agent button:focus-visible {
+    outline: 2px solid var(--ph-ink);
+    outline-offset: 3px;
+    border-radius: 2px;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.public-home-footer {
+    padding: 18px 20px;
+
+    text-align: center;
+
+    color: var(--ph-text-muted);
+    font-size: 12px;
+    letter-spacing: 0.2px;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 760px) {
+
+    .public-home-shell {
+        grid-template-columns: 1fr;
+    }
+
+    .public-home-panel {
+        padding: 40px 28px 34px;
+    }
+
+    .public-home-panel h1 {
+        font-size: 27px;
+    }
+
+    .public-home-ticket {
+        display: none;
+    }
+
+    .public-home-content {
+        padding: 34px 28px 44px;
+    }
+}
+
+@media (max-width: 420px) {
+    .public-home-panel {
+        padding: 34px 22px 28px;
+    }
+
+    .public-home-content {
+        padding: 30px 22px 38px;
+    }
+
+    .public-home-action {
+        grid-template-columns: 36px 1fr 16px;
+        gap: 14px;
+    }
+}
+
+/* =========================================================
+   ACCESIBILIDAD
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    .public-home-action,
+    .public-home-action-arrow {
+        transition: none;
+    }
+}

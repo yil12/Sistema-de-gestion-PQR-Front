@@ -1,0 +1,127 @@
+/* ====== TOAST BASE ====== */
+.toast {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 9999;
+
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    min-width: 300px;
+    max-width: 420px;
+    padding: 14px 16px;
+    background: var(--brand-paper);
+    border: 1px solid var(--brand-border);
+    border-left: 3px solid var(--brand-text-faint);
+    border-radius: var(--brand-radius-md);
+    box-shadow: 0 12px 28px rgba(12, 33, 55, 0.16);
+    animation: toast-in 0.3s cubic-bezier(0.21, 1.02, 0.73, 1) forwards;
+}
+
+@keyframes toast-in {
+    from {
+        opacity: 0;
+        transform: translateX(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ====== ÍCONO ====== */
+.toast-icono {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+/* ====== MENSAJE ====== */
+.toast-mensaje {
+    flex: 1;
+    margin: 0;
+    padding-top: 1px;
+    font-family: var(--brand-sans);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--brand-text);
+    line-height: 1.5;
+}
+
+/* ====== CERRAR ====== */
+.toast-cerrar {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    padding: 2px;
+    color: var(--brand-text-faint);
+    cursor: pointer;
+    display: flex;
+    border-radius: var(--brand-radius-sm);
+}
+
+.toast-cerrar:hover {
+    background: var(--brand-surface-muted);
+    color: var(--brand-text);
+}
+
+.toast-cerrar:focus-visible {
+    outline: 2px solid var(--brand-ink);
+    outline-offset: 2px;
+}
+
+/* ====== VARIANTES POR TIPO ====== */
+.toast-success {
+    border-left-color: var(--brand-green);
+}
+
+.toast-success .toast-icono {
+    color: var(--brand-green);
+}
+
+.toast-error {
+    border-left-color: var(--brand-danger);
+}
+
+.toast-error .toast-icono {
+    color: var(--brand-danger);
+}
+
+.toast-warning {
+    border-left-color: var(--brand-amber);
+}
+
+.toast-warning .toast-icono {
+    color: var(--brand-amber);
+}
+
+.toast-info {
+    border-left-color: var(--brand-ink);
+}
+
+.toast-info .toast-icono {
+    color: var(--brand-ink);
+}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 480px) {
+    .toast {
+        
+        min-width: 0;
+        width: calc(100% - 32px);
+        top: 16px;
+        right: 16px;
+        left: 16px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .toast {
+        animation: none;
+    }
+}
