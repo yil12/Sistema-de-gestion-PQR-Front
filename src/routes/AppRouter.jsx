@@ -2,29 +2,67 @@ import {
     BrowserRouter,
     Routes,
     Route,
-    Navigate,
 } from "react-router-dom";
 
 import Login from "../pages/Login";
+
 import PQRList from "../pages/PQRList";
 import PQRCreate from "../pages/PQRCreate";
 import PQRDetail from "../pages/PQRDetail";
+import Dashboard from "../pages/Dashboard";
+import Agent from "../pages/AgentList";
+import Solicitante from "../pages/SolicitanteList";
+
+
 
 import MainLayout from "../layouts/MainLayout";
+
+import PublicHome from "../pages/PublicHome";
+import PQRPublicCreate from "../pages/PQRPublicCreate";
+import PQRPublicSearch from "../pages/PQRPublicSearch";
 
 const AppRouter = () => {
     return (
         <BrowserRouter>
             <Routes>
+
+                {/* =========================
+                    INICIO PÚBLICO
+                ========================== */}
+
+                <Route
+                    path="/"
+                    element={<PublicHome />}
+                />
+
+                {/* =========================
+                    RUTAS PÚBLICAS
+                ========================== */}
+
+                <Route
+                    path="/pqr/crear"
+                    element={<PQRPublicCreate />}
+                />
+
+                <Route
+                    path="/pqr/consultar"
+                    element={<PQRPublicSearch />}
+                />
+
+                {/* =========================
+                    AUTENTICACIÓN
+                ========================== */}
+
                 <Route
                     path="/login"
                     element={<Login />}
                 />
+
+                {/* =========================
+                    RUTAS INTERNAS
+                ========================== */}
+
                 <Route element={<MainLayout />}>
-                    <Route
-                        path="/"
-                        element={<Navigate to="/pqr" replace />}
-                    />
 
                     <Route
                         path="/pqr"
@@ -43,14 +81,34 @@ const AppRouter = () => {
 
                     <Route
                         path="/dashboard"
-                        element={<div>Dashboard</div>}
+                        element={<Dashboard />}
                     />
+
+                    <Route
+                        path="/agente"
+                        element={<Agent />}
+                    />
+
+                    <Route
+                        path="/solicitante"
+                        element={<Solicitante />}
+                    />
+
                 </Route>
+
+                {/* =========================
+                    404
+                ========================== */}
 
                 <Route
                     path="*"
-                    element={<div>Página no encontrada</div>}
+                    element={
+                        <div>
+                            Página no encontrada
+                        </div>
+                    }
                 />
+
             </Routes>
         </BrowserRouter>
     );
